@@ -5,12 +5,22 @@
     <title>Title</title>
 </head>
 <body>
+
 <div th:text="${list}"></div>
 <div th:text="${map}"></div>
 <div th:text="${dto}"></div>
 
-<scrpit th:inline="javascrpit">
+<!-- js코드로 변환됨. 변환된 결과는 개발자도구 - 요소에서 확인 가능. -->
+<!-- 코드 실행 결과는 개발자도구 - console에서 확인 가능-->
+<script th:inline="javascript">
     const list = [[${list}]]
-</scrpit>
+    const map = [[${map}]]
+    const dto = [[${dto}]]
+
+    console.log(list)
+    console.log(map)
+    console.log(dto)
+
+</script>
 </body>
 </html>

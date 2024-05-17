@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Without th:block</title>
+</head>
+<body>
+1. 일반
+<ul>
+    <div th:each="item : ${items}">
+        <li th:text="${item}"></li>
+    </div>
+</ul>
+<hr/>
+
+2. 블럭 사용
+<ul>
+    <th:block th:each="item : ${items}">
+        <li th:text="${item}"></li>
+    </th:block>
+</ul>
+</body>
+</html>

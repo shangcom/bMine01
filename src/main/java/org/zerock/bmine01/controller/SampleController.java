@@ -69,4 +69,22 @@ public class SampleController {
 
         model.addAttribute("dto", sampleDTO);
     }
+
+    @GetMapping("/ex/ex3")
+    public void ex3(Model model) {
+
+        model.addAttribute("arr", new String[]{"AAA","BBB","CCC"});
+
+    }
+
+
+    // 블럭 사용하면 개발자도구 - 요소에서 최종 html에 어떻게 달라지는지 보는 예시.
+    // 블럭 사용하면 <div> 태그 안 나온다(=랜더링 하지 않는다)
+    @GetMapping("/ex/blockEx")
+    public String example1(Model model) {
+        log.info("blockEx..................");
+        List<String> items = Arrays.asList("Item 1", "Item 2", "Item 3");
+        model.addAttribute("items", items);
+        return "/ex/blockEx"; // This corresponds to "Iteration without th:block"
+    }
 }
