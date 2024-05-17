@@ -5,16 +5,23 @@
     <title>Title</title>
 </head>
 <body>
+
+반복문 1. th:each
 <ul>
     <li th:each="str:${list}" th:text="${str}"></li>
 </ul>
 <hr/>
+
+반복문 2. th:block
 <ul>
     <th:block th:each="str: ${list}">
         <li>[[${str}]]</li>
     </th:block>
 </ul>
 
+<hr/>
+
+반복문 3. 반복문의 status 변수
 <ul>
     <li th:each="str, status: ${list}">
         [[${status.index}]] -- [[${str}]]
@@ -22,6 +29,7 @@
 </ul>
 <hr/>
 
+status 변수의 종류 : index, count, odd, first, last, str
 <ul>
     <th:block th:each="str, status: ${list}">
         [[${status.size}]]
@@ -32,6 +40,10 @@
 </ul>
 <hr/>
 
+조건문
+1.
+th:if 속성값이 참일 경우
+th:unless 속성값이 거짓일 경우 (if의 반대)
 <ul>
     <li th:each="str, status: ${list}">
         <span th:if="${status.odd}">ODD -- [[${str}]]</span>
@@ -41,11 +53,13 @@
 </ul>
 <hr/>
 
+조건문 2. 2항 연산자
 <ul>
     <li th:each="str, status: ${list}">
         <span th:text="${status.odd} ? 'ODD --- ' + ${str}"></span>
     </li>
 </ul>
+<hr/>
 
 <ul>
     <th:block th:each="str, status: ${list}">
@@ -54,6 +68,64 @@
         </li>
     </th:block>
 </ul>
+<hr/>
+
+조건문 3. 3항 연산자
+<ul>
+    <li th:each="str, status : ${list}">
+        <span th:text="${status.even} ? 'EVEN ---' + ${str} : 'ODD ---' + ${str} "></span>
+    </li>
+</ul>
+
+
+th:block 사용 + 3항 연산자
+<ul>
+    <th:block th:each="str, status : ${list}">
+        <li>
+            <span th:text="${status.even} ? 'EVEN ---' + ${str} : 'ODD --- ' + ${str} "></span>
+        </li>
+    </th:block>
+</ul>
+<hr/>
+
+th:switch - case 1.
+<ul>
+    <li th:each="str, status : ${list}" th:switch="${status.index % 3}">
+        <span th:case="0">0</span>
+        <span th:case="1">1</span>
+        <span th:case="2">2</span>
+    </li>
+</ul>
+
+th:switch - case 2. block 사용
+<ul>
+    <li th:each="str, status : ${list}">
+        <th:block th:switch="${status.index % 3}">
+            <span th:case="0">0</span>
+            <span th:case="1">1</span>
+            <span th:case="2">2</span>
+        </th:block>
+    </li>
+</ul>
+<hr/>
+
+th:href 링크 처리 1.
+<a th:href="@{/hello}">/hello로 이동</a>
+<br>
+
+th:href 링크 처리 2. 쿼리 스트링(key=value 형태의 파라미터를 get 방식으로 url에 포함)
+<a th:href="@{/hello(name='AAA', age=16)}">/hello로 이름 나이 보내기</a>
+<hr/>
+<br>
+
+th:href 링크 처리 3. 쿼리 스트링은 자동으로 인코딩 된다(한글, 공백)
+<a th:href="@{/hello(name='한글이름', age   =    16)}">/url 인코딩 테스트</a>
+<br>
+
+th:href 링크 처리 4. 같은 이름의 파라미터 자동 처리
+<a th:href="@{/hello(types=${ {'AA','BB','CC'} }, age= 16)}">Go to /hello</a>
+<a th:href="@{/hello(types=${ {123456,'BB','CC'} }, age= 16)}">Go to /hello</a>
+<!--123456은 문자열로 처리된다.-->
 
 </body>
 </html>
