@@ -1,10 +1,13 @@
 package org.zerock.bmine01.repository;
 
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.zerock.bmine01.domain.Board;
 
 import java.util.Optional;
@@ -19,7 +22,7 @@ public class BoardRepositoryTest {
 
     @Test
     public void testInsert() {
-        IntStream.range(1,100).forEach(i -> {
+        IntStream.range(1, 100).forEach(i -> {
             Board board = Board.builder()
                     .title("title..." + i)
                     .content("content..." + i)
@@ -33,9 +36,37 @@ public class BoardRepositoryTest {
 
     @Test
     public void testSelect() {
-        Long tno = 100L;
-        Optional<Board> result = boardRepository.findById(tno);
+        Long bno = 100L;
+        Optional<Board> result = boardRepository.findById(bno);
         Board board = result.orElseThrow();
         log.info(board);
+    }
+
+    @Test
+    public void testUpdate() {
+        Long bno = 99L;
+        Optional<Board> result = boardRepository.findById(bno);
+        Board board = result.orElseThrow();
+        board.change("Update... title 99", "Update content 99");
+
+        boardRepository.save(board);
+
+        log.info(board);
+    }
+
+    @Test
+    public void testDelete() {
+        Long bno = 3L;
+        Optional<Board> result = boardRepository.findById(bno);
+        Board board = result.orElseThrow();
+        log.info(board);
+
+        boardRepository.deleteById(bno);
+    }
+
+    @Test
+    public void testPaging() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+        Page<Board> result = boardRepository.findAll(pageable);
     }
 }
