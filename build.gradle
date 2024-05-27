@@ -21,8 +21,11 @@ dependencyManagement {
     }
 }
 
+//configurations 블록 :  Gradle에서 의존성 구성을 정의. 각 구성은 특정 빌드 단계에서 어떻게 의존성이 처리될지를 지정.
 configurations {
+    // conpileOnly : 컴파일할 때는 필요하지만, 런타임 시에는 필요하지 않은 의존성을 추가할 때 사용
     compileOnly {
+        // extendsFrom : 한 구성이 다른 구성의 의존성을 상속받도록 함.
         extendsFrom annotationProcessor
     }
 }
@@ -37,21 +40,31 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
-
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-web'// persistence-api 포함.
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
-    annotationProcessor 'org.projectlombok:lombok'
+//lombok
+    compileOnly 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'com.querydsl:querydsl-jpa'
+    annotationProcessor 'com.querydsl:querydsl-apt:jpa'
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+sourceSets {
+    main{
+        java{
+            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generaged"]
+        }
+    }
 }

@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.zerock.bmine01.domain.Board;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -68,5 +70,30 @@ public class BoardRepositoryTest {
     public void testPaging() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
         Page<Board> result = boardRepository.findAll(pageable);
+
+        log.info("total count : " + result.getTotalElements());
+        log.info("total pages : " + result.getTotalPages());
+        log.info("page number : " + result.getNumber());
+        log.info("page size : " + result.getSize());
+
+        List<Board> todoList = result.getContent();
+        todoList.forEach(board -> log.info(board));
+
     }
+
+    @Test
+    public void testKeywordSearch() {
+        String keyword = "update...";
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+
+        Page<Board> todoList = boardRepository.findkeyword(keyword, pageable);
+        todoList.forEach(board -> log.info(board));
+    }
+
+    @Test
+    public void testGetTime() {
+        log.info(boardRepository.getTime());
+    }
+
 }
