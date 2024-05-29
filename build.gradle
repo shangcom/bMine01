@@ -1,31 +1,23 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.2.5'
-    id 'io.spring.dependency-management' version '1.1.4'
-}
 
-//'io.spring.dependency-management' : Gradle에서 Maven의 dependencyManagement 기능을 사용할 수 있도록 함.
-
-group = 'org.zerock'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    sourceCompatibility = '17'
-}
-
-// 특정 BOM 파일을 가져와서 해당 BOM에 정의된 의존성 버전을 프로젝트에 적용.
-// 이거 사용하면 아래 dependencies 작성할 때 버전 따로 입력 안해도 BOM에 정해진 최적 버전으로 적용됨.
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:3.2.5"
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
     }
 }
 
-//configurations 블록 :  Gradle에서 의존성 구성을 정의. 각 구성은 특정 빌드 단계에서 어떻게 의존성이 처리될지를 지정.
+
+plugins {
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'org.zerock'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
 configurations {
-    // conpileOnly : 컴파일할 때는 필요하지만, 런타임 시에는 필요하지 않은 의존성을 추가할 때 사용
     compileOnly {
-        // extendsFrom : 한 구성이 다른 구성의 의존성을 상속받도록 함.
         extendsFrom annotationProcessor
     }
 }
@@ -36,24 +28,41 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-
-    implementation 'org.springframework.boot:spring-boot-starter-web'// persistence-api 포함.
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//lombok
-    compileOnly 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
 
-    implementation 'com.querydsl:querydsl-jpa'
-    annotationProcessor 'com.querydsl:querydsl-apt:jpa'
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+
+    annotationProcessor(
+
+            "javax.persistence:javax.persistence-api",
+
+            "javax.annotation:javax.annotation-api",
+
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
+
+    implementation 'org.modelmapper:modelmapper:3.1.0'
+
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+    implementation 'net.coobird:thumbnailator:0.4.16'
 
 }
 
@@ -62,9 +71,9 @@ tasks.named('test') {
 }
 
 sourceSets {
-    main{
-        java{
-            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generaged"]
+    main {
+        java {
+            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
         }
     }
 }

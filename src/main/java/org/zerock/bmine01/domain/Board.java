@@ -1,8 +1,9 @@
 package org.zerock.bmine01.domain;
 
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity // JPA에서 Entity임을 나타냄.
 @Getter
