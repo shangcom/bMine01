@@ -11,6 +11,12 @@ import java.util.List;
 
 public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardSearch {
 
+
+    /*QuerydslRepositorySupport 클래스의 생성자를 호출.
+     * QuerydslRepositorySupport 클래스는 특정 엔티티와 연결된 설정을 초기화하는
+     * 생성자가 필요함. super(Board.class) 호출을 통해 QuerydslRepositorySupport
+     * 클래스는 Board 엔티티와 관련된 설정을 수행함.
+     */
     public BoardSearchImpl() {
         super(Board.class);
     }
@@ -31,6 +37,15 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         // fetch 메서드를 사용하여 쿼리를 실행하고 결과를 리스트로 반환.
         long count = query.fetchCount();
         //fetchCount 메서드를 사용하여 총 결과 수를 가져옴.
+        return null;
+    }
+
+    @Override
+    public Page<Board> searchAll(String[] types, String keyword, Pageable pageable) {
+        QBoard board = QBoard.board;
+        JPQLQuery<Board> query = from(board);
+
+        // 여기서부터
         return null;
     }
 }
