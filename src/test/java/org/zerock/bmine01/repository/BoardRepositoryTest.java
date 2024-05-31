@@ -102,4 +102,20 @@ public class BoardRepositoryTest {
         boardRepository.search1(pageable);
     }
 
+    @Test
+    public void testSearchAll() {
+
+        String[] types = {"t", "c", "w"};
+        String keyword = "1";
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+        // 첫 번째 페이지에서 10개의 레코드를 내림차순으로 정렬해서 가져옴.
+        Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
+        log.info("제목, 내용, 작성자를 포함하여 1이라는 키워드를 가지고 있는 레코드들 전부 출력");
+        log.info("1을 가진 전체 페이지 수 : " + result.getTotalPages());
+        log.info("페이지의 크기 : " + result.getSize());
+        log.info("현재 페이지 번호 : " + result.getNumber());
+        log.info("이전 페이지 존재? " + result.hasPrevious() + " / " + "다음 페이지 존재? " + result.hasNext());
+        result.getContent().forEach(board -> log.info(board));
+    }
+
 }

@@ -1,16 +1,21 @@
 package org.zerock.bmine01.repository.search;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.zerock.bmine01.domain.Board;
 import org.zerock.bmine01.domain.QBoard;
 
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardSearch {
+//    QuerydslRepositorySupport: QueryDSL과 JPA 통합을 위한 유틸리티 메서드를 제공하는 추상 클래스.
 
+//    BoardSearch 인터페이스를 구현하며, QueryDSL을 활용한 커스텀 검색 기능을 제공.
 
     /*QuerydslRepositorySupport 클래스의 생성자를 호출.
      * QuerydslRepositorySupport 클래스는 특정 엔티티와 연결된 설정을 초기화하는
@@ -26,9 +31,14 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
     // 페이지네이션된 결과를 반환.
     @Override
     public Page<Board> search1(Pageable pageable) {
-        QBoard board = QBoard.board; // QBoard 클래스의 정적 필드 board.
+        QBoard board = QBoard.board; //  QBoard의 필드를 사용하여 Board 엔티티의 각 필드를 참조.
+//      QBoard 클래스의 board 필드를 사용하여 QBoard의 단일 인스턴스를 생성. Board 엔티티를 표현하는 QueryDSL 메타모델 클래스임.
+
         JPQLQuery<Board> query = from(board);
-        //from(board) 메서드를 사용하여 JPQLQuery 객체 생성. Board 엔티티에 대한 쿼리를 작성할 수 있게 해줌.
+        /* from 메서드를 사용하여 QBoard.board를 기반으로 쿼리의 시작점을 설정. 이 메서드는 JPQLQuery 객체를 생성하고,
+        지정된 엔티티 경로(QBoard.board)를 사용하여 쿼리를 초기화함. 이 JPQLQuery 객체는 Board 엔티티에 대한
+        JPQL 쿼리를 작성하고 실행하는 데 사용됨.*/
+
         query.where(board.title.contains("1"));
         //where 메서드를 사용하여 검색 조건 추가. title 필드에 "1"이 포함된 Board 엔티티를 찾음.
         this.getQuerydsl().applyPagination(pageable, query);
@@ -45,8 +55,30 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         QBoard board = QBoard.board;
         JPQLQuery<Board> query = from(board);
 
-        // 여기서부터
-        return null;
+        // 동적으로 조건을 추가하기 위해 BooleanBuilder를 사용
+        if ((types != null && types.length > 0) && keyword != null) {
+            BooleanBuilder booleanBuilder = new BooleanBuilder();
+            for (String type : types) {
+                switch (type) {
+                    case "t":
+                        booleanBuilder.or(board.title.contains(keyword));
+                        break;
+                    case "c":
+                        booleanBuilder.or(board.content.contains(keyword));
+                        break;
+                    case "w":
+                        booleanBuilder.or(board.writer.contains(keyword));
+                        break;
+                }
+            }
+            query.where(booleanBuilder);
+        }
+        query.where(board.bno.gt(0L)); // 기본 조건 추가
+        this.getQuerydsl().applyPagination(pageable, query); // 페이징 적용
+        List<Board> list = query.fetch(); // 쿼리 실행해서 결과를 list에 담음.
+        long count = query.fetchCount();
+        return new PageImpl<>(list, pageable, count); // PageImpl 클래스 : Spring Data JPA가 제공하는 클래스. Page<T> 생성 기능 제공.
+        // 페이징 처리의 최종 결과는 Page<T> 타입으로 반환해야 하기 때문에 사용.
     }
 }
 
