@@ -86,7 +86,7 @@ public class BoardRepositoryTest {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
 
-        Page<Board> todoList = boardRepository.findkeyword(keyword, pageable);
+        Page<Board> todoList = boardRepository.findKeyword(keyword, pageable);
         todoList.forEach(board -> log.info(board));
     }
 
@@ -117,5 +117,6 @@ public class BoardRepositoryTest {
         log.info("이전 페이지 존재? " + result.hasPrevious() + " / " + "다음 페이지 존재? " + result.hasNext());
         result.getContent().forEach(board -> log.info(board));
     }
+
 
 }

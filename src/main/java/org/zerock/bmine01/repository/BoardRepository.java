@@ -12,7 +12,7 @@ import org.zerock.bmine01.repository.search.BoardSearch;
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch {
 
     @Query("select b from Board b where b.title like concat('%',:keyword,'%') ")
-    Page<Board> findkeyword(String keyword, Pageable pageable);
+    Page<Board> findKeyword(String keyword, Pageable pageable);
 
     @Query(value = "select now()", nativeQuery = true)
     String getTime();

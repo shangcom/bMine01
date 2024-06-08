@@ -51,6 +51,10 @@ dependencies {
             "com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
 
+    // 모델매퍼. 객체간 변환 편하게 하기 위해 사용. 여기서는 엔티티와 dto간 변환 위해.
+    implementation 'org.modelmapper:modelmapper:3.1.0'
+
+
 }
 
 tasks.named('test') {
