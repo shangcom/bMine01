@@ -24,7 +24,8 @@ public class PageRequestDTO {
     @Builder.Default
     private int size = 10;
 
-    private String type; // 검색의 종류 t, c, w, tc, tw, cw, twc
+    private String type; // 검색의 종류 t, c, w, tc, tw, cw, twc.
+    // bno, regdate, moddate 등도 가능하나, BoardSearchImpl의 searchAll을 수정해야함.
 
     private String keyword;
 
@@ -40,7 +41,7 @@ public class PageRequestDTO {
 
     public Pageable getPageable(String... props) {
         return PageRequest.of(this.page - 1, this.size, Sort.by(props).descending());
-    }
+    } // this.page -1 : JPA
 
     public String getLink() {
         if (link == null) {

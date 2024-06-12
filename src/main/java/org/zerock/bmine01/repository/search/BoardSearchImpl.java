@@ -35,7 +35,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 //      QBoard 클래스의 board 필드를 사용하여 QBoard의 단일 인스턴스를 생성. Board 엔티티를 표현하는 QueryDSL 메타모델 클래스임.
 
         JPQLQuery<Board> query = from(board);
-        /* from 메서드를 사용하여 QBoard.board를 기반으로 쿼리의 시작점을 설정. 이 메서드는 JPQLQuery 객체를 생성하고,
+        /* from() : QBoard.board를 기반으로 쿼리의 시작점을 설정. 이 메서드는 JPQLQuery 객체를 생성하고,
         지정된 엔티티 경로(QBoard.board)를 사용하여 쿼리를 초기화함. 이 JPQLQuery 객체는 Board 엔티티에 대한
         JPQL 쿼리를 작성하고 실행하는 데 사용됨.*/
 
@@ -52,12 +52,13 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
     @Override
     public Page<Board> searchAll(String[] types, String keyword, Pageable pageable) {
-        QBoard board = QBoard.board;
+        QBoard board = QBoard.board; // QueryDSL을 사용해서 동적쿼리 작성하기 위한 메타 모델 클래스.
         JPQLQuery<Board> query = from(board);
 
         // 동적으로 조건을 추가하기 위해 BooleanBuilder를 사용
         if ((types != null && types.length > 0) && keyword != null) {
             BooleanBuilder booleanBuilder = new BooleanBuilder();
+            // BooleanBuilder : QueryDSL 제공 클래스. 런타임 동적 쿼리 구성 시 사용. AND, OR, NOT 등 논리식 구현.
             for (String type : types) {
                 switch (type) {
                     case "t":
@@ -69,7 +70,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                     case "w":
                         booleanBuilder.or(board.writer.contains(keyword));
                         break;
-                }
+                } // title, content, writer 기준 검색 가능. bno나 regdate, moddate 등도 추가할 수 있음.
             }
             query.where(booleanBuilder);
         }
