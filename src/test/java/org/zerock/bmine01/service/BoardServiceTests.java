@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.bmine01.dto.BoardDTO;
+import org.zerock.bmine01.dto.PageRequestDTO;
+import org.zerock.bmine01.dto.PageResponseDTO;
 
 @SpringBootTest
 @Log4j2
@@ -23,7 +25,7 @@ public class BoardServiceTests {
                 .writer("user00")
                 .build();
 
-       Long bno = boardService.register(boardDTO);
+        Long bno = boardService.register(boardDTO);
         log.info("bno : " + bno);
     }
 
@@ -42,5 +44,19 @@ public class BoardServiceTests {
     public void testRemove() {
         boardService.remove(102L);
 
+    }
+
+    @Test
+    public void testList() {
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .type("tcw")
+                .keyword("1")
+                .page(1)
+                .size(10)
+                .build();
+
+        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        log.info("제목, 내용, 작성자 중 1이 포함된 요소의 목록 : " + responseDTO);
     }
 }

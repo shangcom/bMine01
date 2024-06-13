@@ -2,6 +2,7 @@ package org.zerock.bmine01.repository.search;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.zerock.bmine01.domain.QBoard;
 import javax.persistence.Persistence;
 import java.util.List;
 
+@Log4j2
 public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardSearch {
 //    QuerydslRepositorySupport: QueryDSL과 JPA 통합을 위한 유틸리티 메서드를 제공하는 추상 클래스.
 
@@ -41,6 +43,9 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
         query.where(board.title.contains("1"));
         //where 메서드를 사용하여 검색 조건 추가. title 필드에 "1"이 포함된 Board 엔티티를 찾음.
+
+        log.info("Generated Query: " + query.toString());
+
         this.getQuerydsl().applyPagination(pageable, query);
         //applyPagination() 메서드를 사용하여 pageable 객체에 정의된 페이지네이션 설정을 쿼리에 적용.
         List<Board> list = query.fetch();
@@ -75,7 +80,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
             query.where(booleanBuilder);
         }
         query.where(board.bno.gt(0L)); // 기본 조건 추가
-        this.getQuerydsl().applyPagination(pageable, query); // 페이징 적용
+//        this.getQuerydsl().applyPagination(pageable, query); // 페이징 적용
         List<Board> list = query.fetch(); // 쿼리 실행해서 결과를 list에 담음.
         long count = query.fetchCount();
         return new PageImpl<>(list, pageable, count); // PageImpl 클래스 : Spring Data JPA가 제공하는 클래스. Page<T> 생성 기능 제공.
