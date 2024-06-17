@@ -40,6 +40,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
+    // 타임리프의 확장 기능. ultraq에서 만든 것.
     // Thymeleaf용 다이얼렉트로, 코드 재사용성을 향상시키기 위해 레이아웃과 재사용 가능한 템플릿을 구축할 수 있게 해줌.
     // starter에 tymeleaf 있어도 따로 이렇게 추가해줘야 한다.
     // https://github.com/ultraq/thymeleaf-layout-dialect/

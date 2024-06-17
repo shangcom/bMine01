@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--문서의 문자 인코딩 정의.-->
+    <meta charset="utf-8"/>
+    <!--뷰 포인트 설정-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!--페이지에 대한 설명-->
+    <meta name="description" content=""/>
+    <!--페이지 작성자-->
+    <meta name="author" content=""/>
+    <!--페이지 제목-->
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <!-- Favicon : 브라우저 탭에 표시될 작은 아이콘. 여기서는 타임리프 사용해서 정적 리소스를 동적으로 설정함.-->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}"/>
+    <!-- Core theme CSS (includes Bootstrap) : 페이지의 스타일을 정의하는 css 파일 연결. 타임리프 사용해 정적 리소스를 동적으로 설정함.-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <div class="border-end bg-white" id="sidebar-wrapper">
+        <div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Dashboard</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Shortcuts</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+        </div>
+    </div>
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container-fluid">
+                <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                        <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#!">Action</a>
+                                <a class="dropdown-item" href="#!">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#!">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <!--container-fluid 클래스 : -->
+        <div class="container-fluid" layout:fragment="content">
+            <h1 class="mt-4">Simple Sidebar</h1>
+            <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on
+                larger screens. When toggled using the button below, the menu will change.</p>
+            <p>
+                Make sure to keep all page content within the
+                <code>#page-content-wrapper</code>
+                . The top navbar is optional, and just for demonstration. Just create an element with the
+                <code>#sidebarToggle</code>
+                ID which will toggle the menu when clicked.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JS-->
+<!--부트스트랩의 JavaScript 파일을 jsdelivr가 CDN을 통해 자동으로 배포. 클라이언트는 이를 통해 브라우저로 다운로드 받음.-->
+<!--부트스트랩의 모든 JavaScript 플러그인과 필요한 종속성이 포함되어 있음.-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<!--현재 페이지에 script.js에 정의된 커스텀 기능 사용하기 위함.-->
+<!---->
+<script th:src="@{/js/scripts.js}"></script>
+<!--여러 페이지에서 공통으로 사용할 script 프레그먼트 정의.-->
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>

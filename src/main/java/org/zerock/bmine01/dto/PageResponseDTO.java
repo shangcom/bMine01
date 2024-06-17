@@ -22,7 +22,7 @@ public class PageResponseDTO<E> {
 
     private List<E> dtoList; //
 
-    @Builder(builderMethodName = "withAll")
+    @Builder(builderMethodName = "withAll") // .build() 대신 withAll()로 호출.
     public PageResponseDTO(PageRequestDTO pageRequestDTO, int total, List<E> dtoList) {
 
         if (total <= 0) {
