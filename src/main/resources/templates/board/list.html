@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
 
+<!--여기가 basic.html의 layout:fragment="content"로 지정된 <div> 부분에 들어간다.-->
 <div layout:fragment="content">
     <div class="row mt-3">
         <div class="col">
@@ -25,7 +26,7 @@
 
                         <tbody>
                         <tr th:each="dto:${responseDTO.dtoList}">
-                            <th scpoe="row">[[${dto.bno}]]</th>
+                            <th scope="row">[[${dto.bno}]]</th>
                             <td>
                                 [[${dto.title}]]
                             </td>
