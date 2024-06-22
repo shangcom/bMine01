@@ -33,6 +33,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     // 이니셜라이저에서 lombok 체크함으로써 추가 가능하나, 테스트 환경에는 적용되지 않음으로 따로 설정해주어야 한다.
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    // devtools : html 파일을 컴파일만 해주면 서버 재시작 없이 View 파일 변경 가능.
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
